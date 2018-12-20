@@ -32,15 +32,14 @@ public final class Frame extends JFrame implements Runnable {
     private JPanel urlPanel;
     private JPanel imgPanel;
     private JPanel outputPanel;
-    private ImageIcon imgIcon;
     private JLabel imgLabel;
     public JTextField urlText;
     public JTextField folderText;
     public JButton dlBtn;
     public JButton infoBtn;
     public JButton browseBtn;
-    private JList<String> formatList;
-    private DefaultListModel<String> listModelFormat;
+    public JList<Format> formatList;
+    private DefaultListModel<Format> listModelFormat;
     private ArrayList<Format> formatArray = new ArrayList<>();
 
     public void run() {
@@ -50,12 +49,13 @@ public final class Frame extends JFrame implements Runnable {
         // contenu.setLayout(new FlowLayout());
         urlPanel = new JPanel();
         outputPanel = new JPanel();
-        urlText = new JTextField("http://                                   ");
+        urlText = new JTextField("https://www.youtube.com/watch?v=XXX");
         urlText.setColumns(30);
         folderText = new JTextField("text");
         folderText.setColumns(25);
         dlBtn = new JButton("Download & save");
         infoBtn = new JButton("Get video infos");
+        infoBtn.setEnabled(false);
         browseBtn = new JButton("Browse...");
         dlBtn.addActionListener(new ButtonListener(this));
         infoBtn.addActionListener(new ButtonListener(this));
@@ -74,9 +74,10 @@ public final class Frame extends JFrame implements Runnable {
 
         imgLabel.setSize(1000, 1000);
         listModelFormat = new DefaultListModel<>();
-        listModelFormat.add(0, "null");
+        listModelFormat.add(0, new Format());
 
         formatList = new JList<>(listModelFormat);
+        formatList.addListSelectionListener(new FormatListListener(this));
         imgPanel.setLayout(new FlowLayout());
         imgPanel.add(formatList);
         imgPanel.add(imgLabel);
@@ -135,10 +136,18 @@ public final class Frame extends JFrame implements Runnable {
             }
             f.setExtension(temp.substring(13, 17));
             formatArray.add(f);
-            listModelFormat.add(i, f.toString());
+            listModelFormat.add(i, f);
             i++;
         }
 
+    }
+
+    public void enableInfoBtn() {
+        if (urlText.getText().contains("https://www.youtube.com/watch?v=")) {
+            infoBtn.setEnabled(true);
+        } else {
+            infoBtn.setEnabled(false);
+        }
     }
 
     public class TextFieldListener implements FocusListener {
@@ -146,25 +155,23 @@ public final class Frame extends JFrame implements Runnable {
         @Override
         public void focusGained(FocusEvent e) {
             urlText.selectAll();
+            enableInfoBtn();
+
         }
 
         @Override
         public void focusLost(FocusEvent e) {
-
+            enableInfoBtn();
         }
 
     }
 
     public class TextFieldEnterListener implements KeyListener {
-
-        @Override
-        public void keyPressed(KeyEvent e) {
-
-        }
-
         @Override
         public void keyReleased(KeyEvent e) {
             if (((JTextField) e.getSource()).equals(urlText)) {
+                enableInfoBtn();
+
                 if (e.getKeyCode() == 10) {
                     try {
                         Terminal.getFormats(urlText.getText());
@@ -180,6 +187,11 @@ public final class Frame extends JFrame implements Runnable {
 
         @Override
         public void keyTyped(KeyEvent e) {
+
+        }
+
+        @Override
+        public void keyPressed(KeyEvent arg0) {
 
         }
 

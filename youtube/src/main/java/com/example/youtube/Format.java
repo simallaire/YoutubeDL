@@ -28,7 +28,7 @@ public class Format {
 
     public String toString() {
         String output = this.audioOnly ? "AUDIO" : this.width + "X" + this.height;
-        return output + " " + this.extension + " id: " + this.id;
+        return output + " " + this.extension;
     }
 
     /**
