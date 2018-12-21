@@ -16,3 +16,6 @@ GitHub Url: https://github.com/rg3/youtube-dl
     -Create the JList of options for video conversion.
     -Make an adaptive layout
     -Show video only formats.
+
+#### Built in VSCode with Maven.
+#### Tested on Ubuntu and Windows 10
