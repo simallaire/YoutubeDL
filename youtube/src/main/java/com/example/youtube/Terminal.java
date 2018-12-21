@@ -1,6 +1,7 @@
 package com.example.youtube;
 
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
@@ -19,8 +20,10 @@ public class Terminal {
     }
 
     public static void dlFile(String source, String destination, Format format) throws IOException {
+        // Runtime rt = Runtime.getRuntime();
 
         ProcessBuilder builder = new ProcessBuilder("youtube-dl", "-f", String.valueOf(format.id), source);
+        builder.directory(new File(destination));
         builder.redirectErrorStream(true);
         final Process process = builder.start();
         BufferedReader input = new BufferedReader(new InputStreamReader(process.getInputStream()));
