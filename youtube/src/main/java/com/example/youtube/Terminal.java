@@ -1,11 +1,10 @@
 package com.example.youtube;
 
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
-
-import javax.swing.ImageIcon;
 
 public class Terminal {
 
@@ -18,6 +17,27 @@ public class Terminal {
         final Process process = builder.start();
         read(process);
 
+    }
+
+    public static void dlFile(String source, String destination, Format format) throws IOException {
+        // Runtime rt = Runtime.getRuntime();
+
+        ProcessBuilder builder = new ProcessBuilder("youtube-dl", "-f", String.valueOf(format.id), source);
+        builder.directory(new File(destination));
+        builder.redirectErrorStream(true);
+        final Process process = builder.start();
+        BufferedReader input = new BufferedReader(new InputStreamReader(process.getInputStream()));
+        String line = null;
+        try {
+            while ((line = input.readLine()) != null) {
+
+                System.out.println(line);
+
+            }
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     public static String getThumbnail(String url) throws IOException {
