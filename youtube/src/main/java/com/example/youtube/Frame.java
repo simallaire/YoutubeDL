@@ -64,8 +64,8 @@ public final class Frame extends JFrame implements Runnable {
         infoBtn.addActionListener(new ButtonListener(this));
         browseBtn.addActionListener(new ButtonListener(this));
         dlBtn.setEnabled(false);
-        urlText.addFocusListener(new TextFieldListener());
-        urlText.addKeyListener(new TextFieldEnterListener());
+        urlText.addFocusListener(new TextFieldListener(this));
+        urlText.addKeyListener(new TextFieldEnterListener(this));
         urlPanel.add(urlText);
         urlPanel.add(infoBtn);
 
@@ -81,7 +81,8 @@ public final class Frame extends JFrame implements Runnable {
 
         formatList = new JList<>(listModelFormat);
         formatScrollPane = new JScrollPane(formatList);
-        formatScrollPane.getVerticalScrollBar().setPreferredSize(new Dimension(20, 400));
+        // formatScrollPane.getVerticalScrollBar().setPreferredSize(new Dimension(20, 400));
+        formatList.setPreferredSize(new Dimension(100,1000));
         formatList.addListSelectionListener(new FormatListListener(this));
         imgPanel.setLayout(new FlowLayout());
         imgPanel.add(formatScrollPane);
@@ -144,6 +145,7 @@ public final class Frame extends JFrame implements Runnable {
             listModelFormat.add(i, f);
             i++;
         }
+        formatList.setPreferredSize(new Dimension(100,1000));
 
     }
 
@@ -155,50 +157,6 @@ public final class Frame extends JFrame implements Runnable {
         }
     }
 
-    public class TextFieldListener implements FocusListener {
 
-        @Override
-        public void focusGained(FocusEvent e) {
-            urlText.selectAll();
-            enableInfoBtn();
 
-        }
-
-        @Override
-        public void focusLost(FocusEvent e) {
-            enableInfoBtn();
-        }
-
-    }
-
-    public class TextFieldEnterListener implements KeyListener {
-        @Override
-        public void keyReleased(KeyEvent e) {
-            if (((JTextField) e.getSource()).equals(urlText)) {
-                enableInfoBtn();
-
-                if (e.getKeyCode() == 10) {
-                    try {
-                        Terminal.getFormats(urlText.getText());
-                        setThumbnail();
-                    } catch (IOException e1) {
-                    }
-                    System.out.println("Show Formats");
-                    initFormatList();
-
-                }
-            }
-        }
-
-        @Override
-        public void keyTyped(KeyEvent e) {
-
-        }
-
-        @Override
-        public void keyPressed(KeyEvent arg0) {
-
-        }
-
-    }
 }
