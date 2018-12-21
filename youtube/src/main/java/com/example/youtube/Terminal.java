@@ -5,8 +5,6 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
 
-import javax.swing.ImageIcon;
-
 public class Terminal {
 
     public static String output = "";
@@ -18,6 +16,25 @@ public class Terminal {
         final Process process = builder.start();
         read(process);
 
+    }
+
+    public static void dlFile(String source, String destination, Format format) throws IOException {
+
+        ProcessBuilder builder = new ProcessBuilder("youtube-dl", "-f", String.valueOf(format.id), source);
+        builder.redirectErrorStream(true);
+        final Process process = builder.start();
+        BufferedReader input = new BufferedReader(new InputStreamReader(process.getInputStream()));
+        String line = null;
+        try {
+            while ((line = input.readLine()) != null) {
+
+                System.out.println(line);
+
+            }
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     public static String getThumbnail(String url) throws IOException {

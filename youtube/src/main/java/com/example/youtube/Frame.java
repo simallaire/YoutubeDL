@@ -2,6 +2,7 @@ package com.example.youtube;
 
 import java.awt.Component;
 import java.awt.Container;
+import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.Graphics2D;
 import java.awt.Image;
@@ -24,6 +25,7 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
 import javax.swing.JTextField;
 
 public final class Frame extends JFrame implements Runnable {
@@ -38,6 +40,7 @@ public final class Frame extends JFrame implements Runnable {
     public JButton dlBtn;
     public JButton infoBtn;
     public JButton browseBtn;
+    private JScrollPane formatScrollPane;
     public JList<Format> formatList;
     private DefaultListModel<Format> listModelFormat;
     private ArrayList<Format> formatArray = new ArrayList<>();
@@ -77,9 +80,11 @@ public final class Frame extends JFrame implements Runnable {
         listModelFormat.add(0, new Format());
 
         formatList = new JList<>(listModelFormat);
+        formatScrollPane = new JScrollPane(formatList);
+        formatScrollPane.getVerticalScrollBar().setPreferredSize(new Dimension(20, 400));
         formatList.addListSelectionListener(new FormatListListener(this));
         imgPanel.setLayout(new FlowLayout());
-        imgPanel.add(formatList);
+        imgPanel.add(formatScrollPane);
         imgPanel.add(imgLabel);
 
         outputPanel.add(folderText);
@@ -122,7 +127,7 @@ public final class Frame extends JFrame implements Runnable {
         for (String temp : Terminal.formatsArray) {
             System.out.println(temp);
             Format f = new Format();
-            f.setId(Integer.parseInt(temp.substring(0, temp.indexOf(" ") - 1)));
+            f.setId(Integer.parseInt(temp.substring(0, temp.indexOf(" "))));
             String audioVideo = temp.substring(24);
             audioVideo = audioVideo.substring(0, audioVideo.indexOf(" "));
             if (audioVideo.equals("audio")) {

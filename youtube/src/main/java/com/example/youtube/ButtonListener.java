@@ -19,7 +19,13 @@ public class ButtonListener implements ActionListener {
         JButton source = (JButton) e.getSource();
 
         if (source.equals(frame.dlBtn)) {
-
+            Format format = this.frame.formatList.getSelectedValue();
+            try {
+                Terminal.dlFile(frame.urlText.getText(), frame.folderText.getText(), format);
+            } catch (IOException e1) {
+                // TODO Auto-generated catch block
+                e1.printStackTrace();
+            }
         }
         if (source.equals(frame.browseBtn)) {
             JFileChooser folder = new JFileChooser();
