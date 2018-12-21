@@ -1,16 +1,11 @@
 package com.example.youtube;
 
-import java.awt.Component;
 import java.awt.Container;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.Graphics2D;
 import java.awt.Image;
 import java.awt.RenderingHints;
-import java.awt.event.FocusEvent;
-import java.awt.event.FocusListener;
-import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.net.URL;
@@ -25,6 +20,7 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.JPanel;
+import javax.swing.JProgressBar;
 import javax.swing.JScrollPane;
 import javax.swing.JTextField;
 
@@ -40,6 +36,7 @@ public final class Frame extends JFrame implements Runnable {
     public JButton dlBtn;
     public JButton infoBtn;
     public JButton browseBtn;
+    private JProgressBar progressBar;
     private JScrollPane formatScrollPane;
     public JList<Format> formatList;
     private DefaultListModel<Format> listModelFormat;
@@ -50,6 +47,9 @@ public final class Frame extends JFrame implements Runnable {
         contenu = getContentPane();
         contenu.setLayout(new BoxLayout(contenu, BoxLayout.Y_AXIS));
         // contenu.setLayout(new FlowLayout());
+        progressBar = new JProgressBar();
+        progressBar.setVisible(true);
+
         urlPanel = new JPanel();
         outputPanel = new JPanel();
         urlText = new JTextField("https://www.youtube.com/watch?v=XXX");
@@ -81,8 +81,9 @@ public final class Frame extends JFrame implements Runnable {
 
         formatList = new JList<>(listModelFormat);
         formatScrollPane = new JScrollPane(formatList);
-        // formatScrollPane.getVerticalScrollBar().setPreferredSize(new Dimension(20, 400));
-        formatList.setPreferredSize(new Dimension(100,1000));
+        // formatScrollPane.getVerticalScrollBar().setPreferredSize(new Dimension(20,
+        // 400));
+        formatList.setPreferredSize(new Dimension(100, 1000));
         formatList.addListSelectionListener(new FormatListListener(this));
         imgPanel.setLayout(new FlowLayout());
         imgPanel.add(formatScrollPane);
@@ -91,10 +92,12 @@ public final class Frame extends JFrame implements Runnable {
         outputPanel.add(folderText);
         outputPanel.add(browseBtn);
         outputPanel.add(dlBtn);
+        outputPanel.add(progressBar);
 
         contenu.add(urlPanel);
         contenu.add(imgPanel);
         contenu.add(outputPanel);
+
         imgPanel.grabFocus();
         setSize(600, 200);
         setVisible(true);
@@ -103,7 +106,7 @@ public final class Frame extends JFrame implements Runnable {
     }
 
     public void setThumbnail() throws IOException {
-        String imgUrl = Terminal.getThumbnail(urlText.getText());
+        String imgUrl = Terminal.getThumbnailUrl(urlText.getText());
         BufferedImage bImg = ImageIO.read(new URL(imgUrl));
         ImageIcon iIcon = new ImageIcon(bImg);
 
@@ -145,8 +148,23 @@ public final class Frame extends JFrame implements Runnable {
             listModelFormat.add(i, f);
             i++;
         }
-        formatList.setPreferredSize(new Dimension(100,1000));
+        formatList.setPreferredSize(new Dimension(100, 1000));
 
+    }
+
+    public void progress(String pourcentage) {
+
+        try {
+            double pourcent = Double.parseDouble(pourcentage.substring(0, pourcentage.indexOf("%")));
+            progressBar.setVisible(true);
+            progressBar.setString(pourcentage);
+            progressBar.setValue((int) pourcent);
+            if (pourcent >= 99.9) {
+                progressBar.setVisible(false);
+            }
+        } catch (Exception ex) {
+
+        }
     }
 
     public void enableInfoBtn() {
@@ -157,6 +175,207 @@ public final class Frame extends JFrame implements Runnable {
         }
     }
 
+    /**
+     * @param contenu the contenu to set
+     */
+    public void setContenu(Container contenu) {
+        this.contenu = contenu;
+    }
 
+    /**
+     * @return the urlPanel
+     */
+    public JPanel getUrlPanel() {
+        return urlPanel;
+    }
+
+    /**
+     * @param urlPanel the urlPanel to set
+     */
+    public void setUrlPanel(JPanel urlPanel) {
+        this.urlPanel = urlPanel;
+    }
+
+    /**
+     * @return the imgPanel
+     */
+    public JPanel getImgPanel() {
+        return imgPanel;
+    }
+
+    /**
+     * @param imgPanel the imgPanel to set
+     */
+    public void setImgPanel(JPanel imgPanel) {
+        this.imgPanel = imgPanel;
+    }
+
+    /**
+     * @return the outputPanel
+     */
+    public JPanel getOutputPanel() {
+        return outputPanel;
+    }
+
+    /**
+     * @param outputPanel the outputPanel to set
+     */
+    public void setOutputPanel(JPanel outputPanel) {
+        this.outputPanel = outputPanel;
+    }
+
+    /**
+     * @return the imgLabel
+     */
+    public JLabel getImgLabel() {
+        return imgLabel;
+    }
+
+    /**
+     * @param imgLabel the imgLabel to set
+     */
+    public void setImgLabel(JLabel imgLabel) {
+        this.imgLabel = imgLabel;
+    }
+
+    /**
+     * @return the urlText
+     */
+    public JTextField getUrlText() {
+        return urlText;
+    }
+
+    /**
+     * @param urlText the urlText to set
+     */
+    public void setUrlText(JTextField urlText) {
+        this.urlText = urlText;
+    }
+
+    /**
+     * @return the folderText
+     */
+    public JTextField getFolderText() {
+        return folderText;
+    }
+
+    /**
+     * @param folderText the folderText to set
+     */
+    public void setFolderText(JTextField folderText) {
+        this.folderText = folderText;
+    }
+
+    /**
+     * @return the dlBtn
+     */
+    public JButton getDlBtn() {
+        return dlBtn;
+    }
+
+    /**
+     * @param dlBtn the dlBtn to set
+     */
+    public void setDlBtn(JButton dlBtn) {
+        this.dlBtn = dlBtn;
+    }
+
+    /**
+     * @return the infoBtn
+     */
+    public JButton getInfoBtn() {
+        return infoBtn;
+    }
+
+    /**
+     * @param infoBtn the infoBtn to set
+     */
+    public void setInfoBtn(JButton infoBtn) {
+        this.infoBtn = infoBtn;
+    }
+
+    /**
+     * @return the browseBtn
+     */
+    public JButton getBrowseBtn() {
+        return browseBtn;
+    }
+
+    /**
+     * @param browseBtn the browseBtn to set
+     */
+    public void setBrowseBtn(JButton browseBtn) {
+        this.browseBtn = browseBtn;
+    }
+
+    /**
+     * @return the formatScrollPane
+     */
+    public JScrollPane getFormatScrollPane() {
+        return formatScrollPane;
+    }
+
+    /**
+     * @param formatScrollPane the formatScrollPane to set
+     */
+    public void setFormatScrollPane(JScrollPane formatScrollPane) {
+        this.formatScrollPane = formatScrollPane;
+    }
+
+    /**
+     * @return the formatList
+     */
+    public JList<Format> getFormatList() {
+        return formatList;
+    }
+
+    /**
+     * @param formatList the formatList to set
+     */
+    public void setFormatList(JList<Format> formatList) {
+        this.formatList = formatList;
+    }
+
+    /**
+     * @return the listModelFormat
+     */
+    public DefaultListModel<Format> getListModelFormat() {
+        return listModelFormat;
+    }
+
+    /**
+     * @param listModelFormat the listModelFormat to set
+     */
+    public void setListModelFormat(DefaultListModel<Format> listModelFormat) {
+        this.listModelFormat = listModelFormat;
+    }
+
+    /**
+     * @return the formatArray
+     */
+    public ArrayList<Format> getFormatArray() {
+        return formatArray;
+    }
+
+    /**
+     * @param formatArray the formatArray to set
+     */
+    public void setFormatArray(ArrayList<Format> formatArray) {
+        this.formatArray = formatArray;
+    }
+
+    /**
+     * @return the progressBar
+     */
+    public JProgressBar getProgressBar() {
+        return progressBar;
+    }
+
+    /**
+     * @param progressBar the progressBar to set
+     */
+    public void setProgressBar(JProgressBar progressBar) {
+        this.progressBar = progressBar;
+    }
 
 }

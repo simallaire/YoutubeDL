@@ -21,7 +21,7 @@ public class ButtonListener implements ActionListener {
         if (source.equals(frame.dlBtn)) {
             Format format = this.frame.formatList.getSelectedValue();
             try {
-                Terminal.dlFile(frame.urlText.getText(), frame.folderText.getText(), format);
+                Terminal.dlFile(frame.urlText.getText(), frame.folderText.getText(), format, frame);
             } catch (IOException e1) {
                 // TODO Auto-generated catch block
                 e1.printStackTrace();

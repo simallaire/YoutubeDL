@@ -1,5 +1,6 @@
 package com.example.youtube;
 
+import java.awt.Cursor;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
@@ -19,40 +20,45 @@ public class Terminal {
 
     }
 
-    public static void dlFile(String source, String destination, Format format) throws IOException {
-        // Runtime rt = Runtime.getRuntime();
+    public static void dlFile(String source, String destination, Format format, Frame frame) throws IOException {
+        String line = null;
+
+        frame.getContentPane().setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
 
         ProcessBuilder builder = new ProcessBuilder("youtube-dl", "-f", String.valueOf(format.id), source);
+
         builder.directory(new File(destination));
         builder.redirectErrorStream(true);
+
         final Process process = builder.start();
         BufferedReader input = new BufferedReader(new InputStreamReader(process.getInputStream()));
-        String line = null;
         try {
             while ((line = input.readLine()) != null) {
 
                 System.out.println(line);
-
+                if (line.indexOf("%") > 0) {
+                    String pourcentage = line.substring(11, line.indexOf("%") + 1);
+                    if (pourcentage != null) {
+                        frame.progress(pourcentage);
+                    }
+                }
             }
 
         } catch (IOException e) {
             e.printStackTrace();
         }
+        frame.getContentPane().setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
+
     }
 
-    public static String getThumbnail(String url) throws IOException {
+    public static String getThumbnailUrl(String url) throws IOException {
         String output = null;
         ProcessBuilder builder = new ProcessBuilder("youtube-dl", "--get-thumbnail", url);
         builder.redirectErrorStream(true);
         final Process process = builder.start();
         BufferedReader input = new BufferedReader(new InputStreamReader(process.getInputStream()));
-        String line = null;
         try {
-            while ((line = input.readLine()) != null) {
-
-                output = line;
-
-            }
+            output = input.readLine();
 
         } catch (IOException e) {
             e.printStackTrace();
