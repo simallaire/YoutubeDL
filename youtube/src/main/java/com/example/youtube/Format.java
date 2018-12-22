@@ -6,6 +6,7 @@ public class Format {
     public String size;
     public String bitrate;
     public Boolean audioOnly;
+    public Boolean videoOnly;
     public int width;
     public int height;
 
@@ -15,6 +16,7 @@ public class Format {
         size = "";
         bitrate = "";
         audioOnly = false;
+        videoOnly = false;
         width = 0;
         height = 0;
     }
@@ -24,10 +26,40 @@ public class Format {
         this.extension = extension;
         this.audioOnly = audioOnly;
         this.size = size;
+        this.videoOnly = false;
+    }
+
+    public Format(String formatString) {
+        this.videoOnly = false;
+        this.audioOnly = false;
+        this.setId(Integer.parseInt(formatString.substring(0, formatString.indexOf(" "))));
+        String audioVideo = formatString.substring(24);
+        audioVideo = audioVideo.substring(0, audioVideo.indexOf(" "));
+        if (audioVideo.equals("audio")) {
+            this.setAudioOnly(true);
+        } else {
+            int xPos = audioVideo.indexOf("x");
+            int width = Integer.parseInt(audioVideo.substring(0, xPos).toString());
+            int height = Integer.parseInt(audioVideo.substring(xPos + 1).toString());
+            this.setWidth(width);
+            this.setHeight(height);
+            this.videoOnly = formatString.contains("video only");
+        }
+        this.setExtension(formatString.substring(13, 17));
+
     }
 
     public String toString() {
-        String output = this.audioOnly ? "AUDIO" : this.width + "X" + this.height;
+        String output = "";
+        if (this.audioOnly) {
+            output += "AUDIO ";
+        } else {
+            if (this.videoOnly) {
+                output += "VIDEO ";
+            }
+            output += this.width + "X" + this.height;
+        }
+
         return output + " " + this.extension;
     }
 

@@ -83,7 +83,7 @@ public final class Frame extends JFrame implements Runnable {
         formatScrollPane = new JScrollPane(formatList);
         // formatScrollPane.getVerticalScrollBar().setPreferredSize(new Dimension(20,
         // 400));
-        formatList.setPreferredSize(new Dimension(100, 1000));
+        formatList.setPreferredSize(new Dimension(200, 1000));
         formatList.addListSelectionListener(new FormatListListener(this));
         imgPanel.setLayout(new FlowLayout());
         imgPanel.add(formatScrollPane);
@@ -130,25 +130,12 @@ public final class Frame extends JFrame implements Runnable {
         int i = 0;
         for (String temp : Terminal.formatsArray) {
             System.out.println(temp);
-            Format f = new Format();
-            f.setId(Integer.parseInt(temp.substring(0, temp.indexOf(" "))));
-            String audioVideo = temp.substring(24);
-            audioVideo = audioVideo.substring(0, audioVideo.indexOf(" "));
-            if (audioVideo.equals("audio")) {
-                f.setAudioOnly(true);
-            } else {
-                int xPos = audioVideo.indexOf("x");
-                int width = Integer.parseInt(audioVideo.substring(0, xPos).toString());
-                int height = Integer.parseInt(audioVideo.substring(xPos + 1).toString());
-                f.setWidth(width);
-                f.setHeight(height);
-            }
-            f.setExtension(temp.substring(13, 17));
+            Format f = new Format(temp);
             formatArray.add(f);
             listModelFormat.add(i, f);
             i++;
         }
-        formatList.setPreferredSize(new Dimension(100, 1000));
+        formatList.setPreferredSize(new Dimension(200, 1000));
 
     }
 
