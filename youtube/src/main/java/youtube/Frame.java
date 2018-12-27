@@ -26,7 +26,15 @@ import javax.swing.JTextField;
 import javax.swing.SwingUtilities;
 
 public final class Frame extends JFrame implements Runnable {
+
+    private static final String BROWSE = "Browse...";
+    private static final String GET_VIDEO_INFOS = "Get video infos";
+    private static final String DOWNLOAD_SAVE = "Download & save";
+    private static final String IMG_PATH = "youtube/src/main/java/youtube/image.jpg";
+    private static final String YOUTUBE_DEFAULT = "https://www.youtube.com/watch?v=XXX";
+
     private static final long serialVersionUID = 1L;
+
     private Container contenu;
     private JPanel urlPanel;
     private JPanel imgPanel;
@@ -54,16 +62,16 @@ public final class Frame extends JFrame implements Runnable {
 
         urlPanel = new JPanel();
         outputPanel = new JPanel();
-        urlText = new JTextField("https://www.youtube.com/watch?v=XXX");
+        urlText = new JTextField(YOUTUBE_DEFAULT);
         urlText.setColumns(30);
-        folderText = new JTextField("text");
+        folderText = new JTextField("/");
         titleText = new JLabel();
 
         folderText.setColumns(25);
-        dlBtn = new JButton("Download & save");
-        infoBtn = new JButton("Get video infos");
+        dlBtn = new JButton(DOWNLOAD_SAVE);
+        infoBtn = new JButton(GET_VIDEO_INFOS);
         infoBtn.setEnabled(false);
-        browseBtn = new JButton("Browse...");
+        browseBtn = new JButton(BROWSE);
         dlBtn.addActionListener(new ButtonListener(this));
         infoBtn.addActionListener(new ButtonListener(this));
         browseBtn.addActionListener(new ButtonListener(this));
@@ -77,7 +85,7 @@ public final class Frame extends JFrame implements Runnable {
         imgPanel.setLayout(new FlowLayout());
 
         imgLabel = new JLabel();
-        imgLabel.setIcon(new ImageIcon("youtube/src/main/java/com/example/youtube/image.jpg"));
+        imgLabel.setIcon(new ImageIcon(IMG_PATH));
 
         imgLabel.setSize(1000, 1000);
         listModelFormat = new DefaultListModel<>();
@@ -169,7 +177,7 @@ public final class Frame extends JFrame implements Runnable {
     }
 
     public void enableInfoBtn() {
-        if (urlText.getText().contains("https://www.youtube.com/watch?v=")) {
+        if (urlText.getText().contains(YOUTUBE_DEFAULT)) {
             infoBtn.setEnabled(true);
         } else {
             infoBtn.setEnabled(false);
