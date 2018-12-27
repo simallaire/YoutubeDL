@@ -20,6 +20,22 @@ public class Terminal {
 
     }
 
+    public static String getTitle(String url) throws IOException {
+        ProcessBuilder builder = new ProcessBuilder("youtube-dl", "--get-title", url);
+        builder.redirectErrorStream(true);
+
+        final Process process = builder.start();
+        BufferedReader input = new BufferedReader(new InputStreamReader(process.getInputStream()));
+        try {
+            output = input.readLine();
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return output;
+
+    }
+
     public static void dlFile(String source, String destination, Format format, Frame frame) throws IOException {
         String line = null;
 

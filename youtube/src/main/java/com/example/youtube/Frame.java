@@ -23,6 +23,7 @@ import javax.swing.JPanel;
 import javax.swing.JProgressBar;
 import javax.swing.JScrollPane;
 import javax.swing.JTextField;
+import javax.swing.SwingUtilities;
 
 public final class Frame extends JFrame implements Runnable {
     private static final long serialVersionUID = 1L;
@@ -31,6 +32,7 @@ public final class Frame extends JFrame implements Runnable {
     private JPanel imgPanel;
     private JPanel outputPanel;
     private JLabel imgLabel;
+    public JLabel titleText;
     public JTextField urlText;
     public JTextField folderText;
     public JButton dlBtn;
@@ -55,6 +57,8 @@ public final class Frame extends JFrame implements Runnable {
         urlText = new JTextField("https://www.youtube.com/watch?v=XXX");
         urlText.setColumns(30);
         folderText = new JTextField("text");
+        titleText = new JLabel();
+
         folderText.setColumns(25);
         dlBtn = new JButton("Download & save");
         infoBtn = new JButton("Get video infos");
@@ -95,6 +99,7 @@ public final class Frame extends JFrame implements Runnable {
         outputPanel.add(progressBar);
 
         contenu.add(urlPanel);
+        contenu.add(titleText);
         contenu.add(imgPanel);
         contenu.add(outputPanel);
 
@@ -130,10 +135,12 @@ public final class Frame extends JFrame implements Runnable {
         int i = 0;
         for (String temp : Terminal.formatsArray) {
             System.out.println(temp);
-            Format f = new Format(temp);
-            formatArray.add(f);
-            listModelFormat.add(i, f);
-            i++;
+            if (!temp.contains("info") && !temp.contains("format")) {
+                Format f = new Format(temp);
+                formatArray.add(f);
+                listModelFormat.add(i, f);
+                i++;
+            }
         }
         formatList.setPreferredSize(new Dimension(200, 1000));
 
@@ -144,8 +151,15 @@ public final class Frame extends JFrame implements Runnable {
         try {
             double pourcent = Double.parseDouble(pourcentage.substring(0, pourcentage.indexOf("%")));
             progressBar.setVisible(true);
-            progressBar.setString(pourcentage);
-            progressBar.setValue((int) pourcent);
+            SwingUtilities.invokeLater(new Runnable() {
+                public void run() {
+
+                    progressBar.setString(pourcentage);
+                    progressBar.setValue((int) pourcent);
+
+                }
+            });
+
             if (pourcent >= 99.9) {
                 progressBar.setVisible(false);
             }

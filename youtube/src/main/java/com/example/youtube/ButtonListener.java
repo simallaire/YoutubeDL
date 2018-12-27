@@ -41,6 +41,7 @@ public class ButtonListener implements ActionListener {
             try {
                 Terminal.getFormats(frame.urlText.getText());
                 frame.setThumbnail();
+                frame.titleText.setText(Terminal.getTitle(frame.urlText.getText()));
             } catch (IOException e1) {
             }
             System.out.println("Show Formats");
