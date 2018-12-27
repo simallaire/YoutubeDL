@@ -11,7 +11,7 @@
 	<groupId>com.example</groupId>
 	<artifactId>youtube</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>demo</name>
+	<name>Youtube-dlGUI</name>
 	<description>Demo project for Spring Boot</description>
 
 	<properties>
