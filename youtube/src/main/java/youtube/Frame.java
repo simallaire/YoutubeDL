@@ -27,6 +27,11 @@ import javax.swing.SwingUtilities;
 
 public final class Frame extends JFrame implements Runnable {
 
+    /**
+     *
+     */
+
+    private static final String DEFAULT_PATH = "/";
     private static final String BROWSE = "Browse...";
     private static final String GET_VIDEO_INFOS = "Get video infos";
     private static final String DOWNLOAD_SAVE = "Download & save";
@@ -64,7 +69,7 @@ public final class Frame extends JFrame implements Runnable {
         outputPanel = new JPanel();
         urlText = new JTextField(YOUTUBE_DEFAULT);
         urlText.setColumns(30);
-        folderText = new JTextField("/");
+        folderText = new JTextField(DEFAULT_PATH);
         titleText = new JLabel();
 
         folderText.setColumns(25);
