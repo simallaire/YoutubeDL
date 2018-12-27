@@ -6,13 +6,7 @@
             "request": "launch",
             "mainClass": "youtube.App",
             "projectName": "youtube"
-        },
-        {
-            "type": "java",
-            "name": "CodeLens (Launch) - App",
-            "request": "launch",
-            "mainClass": "com.example.youtube.App",
-            "projectName": "youtube"
         }
+
     ]
 }
