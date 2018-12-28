@@ -110,6 +110,7 @@ public final class Frame extends JFrame implements Runnable {
         infoBtn = new JButton(GET_VIDEO_INFOS);
         browseBtn = new JButton(BROWSE);
         listModelFormat = new DefaultListModel<>();
+        formatArray = new ArrayList<>();
         formatList = new JList<>(listModelFormat);
 
         progressBar.setVisible(true);
