@@ -55,53 +55,31 @@ public final class Frame extends JFrame implements Runnable {
     private JScrollPane formatScrollPane;
     public JList<Format> formatList;
     private DefaultListModel<Format> listModelFormat;
-    private ArrayList<Format> formatArray = new ArrayList<>();
+    private ArrayList<Format> formatArray;
 
     public void run() {
 
         contenu = getContentPane();
         contenu.setLayout(new BoxLayout(contenu, BoxLayout.Y_AXIS));
-        // contenu.setLayout(new FlowLayout());
-        progressBar = new JProgressBar();
-        progressBar.setVisible(true);
 
-        urlPanel = new JPanel();
-        outputPanel = new JPanel();
-        urlText = new JTextField(YOUTUBE_DEFAULT);
-        urlText.setColumns(30);
-        folderText = new JTextField(DEFAULT_PATH);
-        titleText = new JLabel();
+        initComponents();
 
-        folderText.setColumns(25);
-        dlBtn = new JButton(DOWNLOAD_SAVE);
-        infoBtn = new JButton(GET_VIDEO_INFOS);
-        infoBtn.setEnabled(false);
-        browseBtn = new JButton(BROWSE);
-        dlBtn.addActionListener(new ButtonListener(this));
-        infoBtn.addActionListener(new ButtonListener(this));
-        browseBtn.addActionListener(new ButtonListener(this));
-        dlBtn.setEnabled(false);
-        urlText.addFocusListener(new TextFieldListener(this));
-        urlText.addKeyListener(new TextFieldEnterListener(this));
+        fillPanes();
+
+        addListeners();
+
+        imgPanel.grabFocus();
+        setSize(600, 200);
+        setVisible(true);
+        pack();
+
+    }
+
+    private void fillPanes() {
+
         urlPanel.add(urlText);
         urlPanel.add(infoBtn);
 
-        imgPanel = new JPanel();
-        imgPanel.setLayout(new FlowLayout());
-
-        imgLabel = new JLabel();
-        imgLabel.setIcon(new ImageIcon(IMG_PATH));
-
-        imgLabel.setSize(1000, 1000);
-        listModelFormat = new DefaultListModel<>();
-        listModelFormat.add(0, new Format());
-
-        formatList = new JList<>(listModelFormat);
-        formatScrollPane = new JScrollPane(formatList);
-        // formatScrollPane.getVerticalScrollBar().setPreferredSize(new Dimension(20,
-        // 400));
-        formatList.setPreferredSize(new Dimension(200, 1000));
-        formatList.addListSelectionListener(new FormatListListener(this));
         imgPanel.setLayout(new FlowLayout());
         imgPanel.add(formatScrollPane);
         imgPanel.add(imgLabel);
@@ -116,10 +94,48 @@ public final class Frame extends JFrame implements Runnable {
         contenu.add(imgPanel);
         contenu.add(outputPanel);
 
-        imgPanel.grabFocus();
-        setSize(600, 200);
-        setVisible(true);
-        pack();
+    }
+
+    private void initComponents() {
+
+        progressBar = new JProgressBar();
+        urlPanel = new JPanel();
+        outputPanel = new JPanel();
+        imgPanel = new JPanel();
+        urlText = new JTextField(YOUTUBE_DEFAULT);
+        folderText = new JTextField(DEFAULT_PATH);
+        titleText = new JLabel();
+        imgLabel = new JLabel();
+        dlBtn = new JButton(DOWNLOAD_SAVE);
+        infoBtn = new JButton(GET_VIDEO_INFOS);
+        browseBtn = new JButton(BROWSE);
+        listModelFormat = new DefaultListModel<>();
+        formatList = new JList<>(listModelFormat);
+
+        progressBar.setVisible(true);
+        urlText.setColumns(30);
+        folderText.setColumns(25);
+        dlBtn.setEnabled(false);
+        infoBtn.setEnabled(false);
+        imgPanel.setLayout(new FlowLayout());
+
+        imgLabel.setIcon(new ImageIcon(IMG_PATH));
+
+        imgLabel.setSize(1000, 1000);
+        listModelFormat.add(0, new Format());
+
+        formatList.setPreferredSize(new Dimension(200, 1000));
+        formatScrollPane = new JScrollPane(formatList);
+    }
+
+    private void addListeners() {
+
+        dlBtn.addActionListener(new ButtonListener(this));
+        infoBtn.addActionListener(new ButtonListener(this));
+        browseBtn.addActionListener(new ButtonListener(this));
+        urlText.addFocusListener(new TextFieldListener(this));
+        urlText.addKeyListener(new TextFieldEnterListener(this));
+        formatList.addListSelectionListener(new FormatListListener(this));
 
     }
 
