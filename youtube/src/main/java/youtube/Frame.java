@@ -53,11 +53,11 @@ public final class Frame extends JFrame implements Runnable {
     public JButton dlBtn;
     public JButton infoBtn;
     public JButton browseBtn;
-    private JProgressBar progressBar;
     private JScrollPane formatScrollPane;
     public JList<Format> formatList;
     private DefaultListModel<Format> listModelFormat;
     private ArrayList<Format> formatArray;
+    private ProgressPanel progressPanel;
 
     public void run() {
         contenu = getContentPane();
@@ -73,6 +73,7 @@ public final class Frame extends JFrame implements Runnable {
         setSize(600, 200);
         setVisible(true);
         pack();
+        setTitle("Download & Convert Youtube videos.");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
     }
@@ -89,7 +90,7 @@ public final class Frame extends JFrame implements Runnable {
         outputPanel.add(folderText);
         outputPanel.add(browseBtn);
         outputPanel.add(dlBtn);
-        outputPanel.add(progressBar);
+        outputPanel.add(progressPanel);
 
         contenu.add(urlPanel);
         contenu.add(titleText);
@@ -100,7 +101,7 @@ public final class Frame extends JFrame implements Runnable {
 
     private void initComponents() {
 
-        progressBar = new JProgressBar();
+        progressPanel = new ProgressPanel();
         urlPanel = new JPanel();
         outputPanel = new JPanel();
         imgPanel = new JPanel();
@@ -115,8 +116,7 @@ public final class Frame extends JFrame implements Runnable {
         formatArray = new ArrayList<>();
         formatList = new JList<>(listModelFormat);
 
-        progressBar.setVisible(true);
-        progressBar.setStringPainted(true);
+
         urlText.setColumns(30);
         folderText.setColumns(25);
         dlBtn.setEnabled(false);
@@ -181,18 +181,15 @@ public final class Frame extends JFrame implements Runnable {
 
     }
 
-    public void progress(String pourcentage) {
+    public void progress(String pourcentage,String details) {
 
         try {
             double pourcent = Double.parseDouble(pourcentage.substring(0, pourcentage.indexOf("%")));
-            progressBar.setVisible(true);
-            progressBar.setString(pourcentage);
-            progressBar.setValue((int) pourcent);
-
-         
-
+            progressPanel.showHidePane(true);
+            progressPanel.updateProgress(details, pourcentage, (int)pourcent);
+            Thread.sleep(1000);
             if (pourcent >= 99.9) {
-                progressBar.setVisible(false);
+                progressPanel.showHidePane(false);
             }
         } catch (Exception ex) {
         
@@ -396,19 +393,7 @@ public final class Frame extends JFrame implements Runnable {
         this.formatArray = formatArray;
     }
 
-    /**
-     * @return the progressBar
-     */
-    public JProgressBar getProgressBar() {
-        return progressBar;
-    }
 
-    /**
-     * @param progressBar the progressBar to set
-     */
-    public void setProgressBar(JProgressBar progressBar) {
-        this.progressBar = progressBar;
-    }
 
 
 }

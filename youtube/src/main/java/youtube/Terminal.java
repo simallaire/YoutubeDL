@@ -56,8 +56,9 @@ public class Terminal {
                 System.out.println(line);
                 if (line.indexOf("%") > 0) {
                     String pourcentage = line.substring(11, line.indexOf("%") + 1);
+                    String details = line.substring(line.indexOf("at")+3,line.indexOf("ETA")+9);
                     if (pourcentage != null) {
-                        frame.progress(pourcentage);
+                        frame.progress(pourcentage,details);
                     }
                 }
             }

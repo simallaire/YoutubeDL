@@ -6,8 +6,7 @@ import java.io.IOException;
 
 import javax.swing.JButton;
 import javax.swing.JFileChooser;
-import javax.swing.JOptionPane;
-import javax.swing.SwingUtilities;
+
 
 public class ButtonListener implements ActionListener {
     private final Frame frame;

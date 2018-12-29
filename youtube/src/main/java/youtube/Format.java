@@ -38,6 +38,8 @@ public class Format {
         this.setId(Integer.parseInt(formatString.substring(0, formatString.indexOf(" "))));
         String audioVideo = formatString.substring(24);
         audioVideo = audioVideo.substring(0, audioVideo.indexOf(" "));
+        String[] components = formatString.split(",");
+        this.setSize(components[components.length-1]);
         if (audioVideo.equals("audio")) {
             this.setAudioOnly(true);
         } else {
@@ -64,7 +66,8 @@ public class Format {
             output += this.width + "X" + this.height;
         }
         output = output + " " + this.extension;
-        output += hdr?" HDR":"";
+        output += hdr?" HDR ":" ";
+        output += size;
         return output;
     }
 
