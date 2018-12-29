@@ -7,6 +7,8 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
 
+import javax.swing.SwingWorker;
+
 public class Terminal {
 
     public static String output = "";
@@ -75,6 +77,7 @@ public class Terminal {
         BufferedReader input = new BufferedReader(new InputStreamReader(process.getInputStream()));
         try {
             output = input.readLine();
+            
 
         } catch (IOException e) {
             e.printStackTrace();

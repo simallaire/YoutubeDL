@@ -24,6 +24,8 @@ import javax.swing.JProgressBar;
 import javax.swing.JScrollPane;
 import javax.swing.JTextField;
 import javax.swing.SwingUtilities;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
 
 public final class Frame extends JFrame implements Runnable {
 
@@ -36,7 +38,7 @@ public final class Frame extends JFrame implements Runnable {
     private static final String GET_VIDEO_INFOS = "Get video infos";
     private static final String DOWNLOAD_SAVE = "Download & save";
     private static final String IMG_PATH = "youtube/src/main/java/youtube/image.jpg";
-    private static final String YOUTUBE_DEFAULT = "https://www.youtube.com/watch?v=XXX";
+    private static final String YOUTUBE_DEFAULT = "https://www.youtube.com/watch?v=";
 
     private static final long serialVersionUID = 1L;
 
@@ -58,20 +60,20 @@ public final class Frame extends JFrame implements Runnable {
     private ArrayList<Format> formatArray;
 
     public void run() {
-
         contenu = getContentPane();
         contenu.setLayout(new BoxLayout(contenu, BoxLayout.Y_AXIS));
-
+        
         initComponents();
-
+        
         fillPanes();
-
+        
         addListeners();
-
+        
         imgPanel.grabFocus();
         setSize(600, 200);
         setVisible(true);
         pack();
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
     }
 
@@ -114,6 +116,7 @@ public final class Frame extends JFrame implements Runnable {
         formatList = new JList<>(listModelFormat);
 
         progressBar.setVisible(true);
+        progressBar.setStringPainted(true);
         urlText.setColumns(30);
         folderText.setColumns(25);
         dlBtn.setEnabled(false);
@@ -137,6 +140,7 @@ public final class Frame extends JFrame implements Runnable {
         urlText.addFocusListener(new TextFieldListener(this));
         urlText.addKeyListener(new TextFieldEnterListener(this));
         formatList.addListSelectionListener(new FormatListListener(this));
+
 
     }
 
@@ -172,6 +176,7 @@ public final class Frame extends JFrame implements Runnable {
                 i++;
             }
         }
+        
         formatList.setPreferredSize(new Dimension(200, 1000));
 
     }
@@ -181,20 +186,16 @@ public final class Frame extends JFrame implements Runnable {
         try {
             double pourcent = Double.parseDouble(pourcentage.substring(0, pourcentage.indexOf("%")));
             progressBar.setVisible(true);
-            SwingUtilities.invokeLater(new Runnable() {
-                public void run() {
+            progressBar.setString(pourcentage);
+            progressBar.setValue((int) pourcent);
 
-                    progressBar.setString(pourcentage);
-                    progressBar.setValue((int) pourcent);
-
-                }
-            });
+         
 
             if (pourcent >= 99.9) {
                 progressBar.setVisible(false);
             }
         } catch (Exception ex) {
-
+        
         }
     }
 
@@ -408,5 +409,6 @@ public final class Frame extends JFrame implements Runnable {
     public void setProgressBar(JProgressBar progressBar) {
         this.progressBar = progressBar;
     }
+
 
 }

@@ -7,6 +7,7 @@ public class Format {
     public String bitrate;
     public Boolean audioOnly;
     public Boolean videoOnly;
+    public Boolean hdr;
     public int width;
     public int height;
 
@@ -17,6 +18,7 @@ public class Format {
         bitrate = "";
         audioOnly = false;
         videoOnly = false;
+        hdr = false;
         width = 0;
         height = 0;
     }
@@ -32,6 +34,7 @@ public class Format {
     public Format(String formatString) {
         this.videoOnly = false;
         this.audioOnly = false;
+        this.hdr = false;
         this.setId(Integer.parseInt(formatString.substring(0, formatString.indexOf(" "))));
         String audioVideo = formatString.substring(24);
         audioVideo = audioVideo.substring(0, audioVideo.indexOf(" "));
@@ -44,6 +47,7 @@ public class Format {
             this.setWidth(width);
             this.setHeight(height);
             this.videoOnly = formatString.contains("video only");
+            this.hdr = formatString.contains("HDR");
         }
         this.setExtension(formatString.substring(13, 17));
 
@@ -59,8 +63,9 @@ public class Format {
             }
             output += this.width + "X" + this.height;
         }
-
-        return output + " " + this.extension;
+        output = output + " " + this.extension;
+        output += hdr?" HDR":"";
+        return output;
     }
 
     /**

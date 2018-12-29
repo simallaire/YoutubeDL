@@ -2,11 +2,17 @@
     "configurations": [
         {
             "type": "java",
+            "name": "CodeLens (Launch) - Main",
+            "request": "launch",
+            "mainClass": "youtube.Main",
+            "projectName": "youtube"
+        },
+        {
+            "type": "java",
             "name": "CodeLens (Launch) - App",
             "request": "launch",
             "mainClass": "youtube.App",
             "projectName": "youtube"
         }
-
     ]
 }
